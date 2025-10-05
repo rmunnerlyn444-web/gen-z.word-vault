@@ -1,148 +1,494 @@
+```html
+<!--
+  TikTok Dictionary - index.html
+  ---------------------------------------------------------
+  Features:
+  - TikTok-themed design (purple/dark gradient + TikTok accent colors)
+  - Big cursive title "THE TIKTOK DICTIONARY"
+  - Short professional description
+  - Alphabet navigation
+  - Submit new definition form (adds to Firestore)
+  - List of definitions with like / dislike counts
+  - Per-definition comments with minimum 200-character feedback
+  - Pagination (Next / Prev)
+  - Uses Firebase Firestore for live data (you must supply your firebaseConfig)
+  - NOTE: Replace placeholder images (images/charli.jpg, images/ishowspeed.jpg)
+    with files you have rights to and upload them to your repo under /images/
+---------------------------------------------------------
+INSTRUCTIONS (quick):
+1. Create a Firebase project, enable Firestore (in test mode while developing).
+2. Add a Web App in Firebase and copy the firebaseConfig object into the placeholder below.
+3. Upload this file as index.html to your GitHub repo and enable Pages.
+4. Upload your images to /images/ in the same repo (or change the img src paths).
+5. Open the site and ensure Firebase config is correct.
+
+Security note: For a production app, lock your Firestore rules (not left open).
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Urban Dictionary Clone</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>THE TIKTOK DICTIONARY</title>
+  <meta name="description" content="THE TIKTOK DICTIONARY - Find the lingo behind streamers, creators, and viral TikTok culture." />
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <!-- Global AdSense script placeholder (keep if using AdSense) -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+    :root{
+      --bg-1:#0f1724;
+      --tile: rgba(255,255,255,0.06);
+      --accent1:#69F; /* light purple accent */
+      --tiktok-cyan:#25F4EE;
+      --tiktok-pink:#FE2C55;
+      --muted:rgba(255,255,255,0.7);
+    }
+    html,body{height:100%;margin:0;font-family:"Poppins",system-ui,-apple-system; color:#fff}
+    body{
+      background: radial-gradient(1000px 500px at 10% 10%, rgba(38,0,77,0.25), transparent),
+                  linear-gradient(135deg,#120f2e 0%, #20103a 40%, #2b1a4b 100%);
+      display:flex;justify-content:center;
+      padding:28px;
+    }
+    .app {
+      width:100%;
+      max-width:1100px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+      overflow:hidden;
+    }
+    header{
+      padding:28px;
+      position:relative;
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(90deg, rgba(20,10,40,0.6), rgba(30,15,60,0.4));
+    }
+    .brand {
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .logo {
+      width:72px;height:72px;border-radius:12px;overflow:hidden;border:2px solid rgba(255,255,255,0.06);
+      display:flex;align-items:center;justify-content:center;background:linear-gradient(45deg,var(--tiktok-cyan),var(--tiktok-pink));
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;opacity:0.95}
+    .title-block{
+      display:flex;flex-direction:column;
+    }
+    h1.title {
+      margin:0;
+      font-family:"Great Vibes", cursive;
+      font-size:40px;
+      line-height:1;
+      letter-spacing:0.6px;
       color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
     }
-    header {
-      text-align: center;
-      padding: 30px 20px;
+    p.lead {
+      margin:4px 0 0 0;
+      color:var(--muted);
+      font-size:14px;
+      max-width:760px;
     }
-    header h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
+
+    /* hero images (subtle, underlay) */
+    .hero-images{
+      position:absolute;right:18px;top:12px;opacity:0.08;pointer-events:none;display:flex;gap:10px;
     }
-    nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 10px 0;
+    .hero-images img{width:120px;height:120px;object-fit:cover;border-radius:8px;filter:grayscale(20%) blur(0.5px)}
+
+    main{display:flex;gap:22px;padding:26px;}
+
+    /* left column */
+    .left{
+      flex:1 1 520px;
+      min-width:280px;
     }
-    nav a {
-      color: #fff;
-      margin: 5px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.15);
-      text-decoration: none;
-      transition: 0.3s;
+    .search-row{
+      display:flex;gap:12px;margin-bottom:14px;
     }
-    nav a:hover {
-      background: rgba(255,255,255,0.35);
+    .search-row input{
+      flex:1;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;
     }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
+    .search-row button{
+      padding:12px 16px;border-radius:12px;border:none;background:linear-gradient(90deg,var(--tiktok-cyan),var(--tiktok-pink));color:#000;font-weight:700;cursor:pointer;
     }
-    .word-card {
-      background: rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
+
+    .alphabet{
+      display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;
     }
-    .word-card h2 {
-      margin: 0 0 8px;
-      font-size: 1.5em;
-      color: #ffda79;
+    .alphabet a{
+      display:inline-block;padding:8px 10px;border-radius:8px;background:var(--tile);color:var(--muted);text-decoration:none;font-weight:600;
     }
-    .word-card p {
-      margin: 0;
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid rgba(255,255,255,0.03);
     }
-    form {
-      background: rgba(255,255,255,0.15);
-      padding: 20px;
-      border-radius: 12px;
-      margin-top: 20px;
+    .word-row{
+      display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
     }
-    form input, form textarea {
-      width: 100%;
-      margin: 8px 0;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
+    .word-title{font-size:22px;margin:0;color:#fff}
+    .word-meta{color:var(--muted);font-size:13px;margin-top:8px}
+    .definition{margin:12px 0 10px 0;color:#e9e9fb}
+
+    .actions{display:flex;gap:8px;align-items:center}
+    .like-btn,.dislike-btn{
+      background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:10px;cursor:pointer;display:flex;gap:8px;align-items:center;
     }
-    form button {
-      background: #ffda79;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-weight: bold;
-    }
-    form button:hover {
-      background: #ffc048;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9em;
-      background: rgba(255,255,255,0.1);
-      margin-top: 30px;
+    .like-btn.active, .dislike-btn.active{border-color:var(--tiktok-cyan); color:var(--tiktok-cyan)}
+    .count{font-weight:700;color:#fff}
+
+    /* comment area */
+    .comment-area textarea{width:100%;min-height:110px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
+    .comment-area .submit-comment{margin-top:8px;padding:10px 14px;border-radius:10px;background:var(--tiktok-pink);border:none;color:#fff;cursor:pointer}
+
+    /* right column */
+    .right{width:320px;flex:0 0 320px}
+    .right .card{position:sticky;top:20px}
+
+    /* pagination */
+    .pager{display:flex;justify-content:center;gap:10px;margin-top:12px}
+    .pager button{padding:8px 10px;border-radius:8px;border:none;background:var(--tile);color:var(--muted);cursor:pointer}
+
+    footer{padding:16px;text-align:center;color:var(--muted);font-size:13px;}
+    a.small{color:var(--tiktok-cyan);text-decoration:none}
+    /* responsive */
+    @media (max-width:880px){
+      main{flex-direction:column}
+      .hero-images{display:none}
+      .right{width:100%}
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Urban Dictionary Clone</h1>
-    <p>Gen Z slang explained with vibes 🌐🔥</p>
-  </header>
-
-  <nav>
-    <a href="#A">A</a>
-    <a href="#B">B</a>
-    <a href="#C">C</a>
-    <a href="#R">R</a>
-    <a href="#S">S</a>
-    <a href="#F">F</a>
-    <!-- add more alphabet links -->
-  </nav>
-
-  <div class="container">
-    <!-- Example Words -->
-    <section id="R">
-      <div class="word-card">
-        <h2>Rizz</h2>
-        <p>Slang for charisma or ability to charm, often used on TikTok and by streamers like Kai Cenat.</p>
+  <div class="app" id="app">
+    <header>
+      <div class="brand">
+        <div class="logo"><img src="images/tiktok-symbol.png" alt="logo" /></div>
+        <div class="title-block">
+          <h1 class="title">THE TIKTOK DICTIONARY</h1>
+          <p class="lead">Explore the lingo of creators, streamers, and viral TikTok culture — terms, examples, and community feedback.</p>
+        </div>
       </div>
-    </section>
 
-    <section id="S">
-      <div class="word-card">
-        <h2>Skibidi</h2>
-        <p>A viral meme dance/sound that blew up on TikTok and YouTube, often used ironically.</p>
+      <div class="hero-images" aria-hidden="true">
+        <!-- Replace these with your own images (must have rights). Keep them subtle! -->
+        <img src="images/ishowspeed.jpg" alt="IShowSpeed">
+        <img src="images/charli.jpg" alt="Charli D'Amelio">
       </div>
-    </section>
+    </header>
 
-    <section id="F">
-      <div class="word-card">
-        <h2>Fanum Tax</h2>
-        <p>Phrase made popular by streamer Fanum and the AMP crew, meaning taking food without asking.</p>
-      </div>
-    </section>
+    <main>
+      <section class="left">
+        <div class="card">
+          <div class="search-row">
+            <input id="searchInput" placeholder="Search a term (e.g., rizz, simp, cap)"/>
+            <button id="searchBtn">Search</button>
+          </div>
 
-    <!-- Submit Form -->
-    <form>
-      <h3>Submit a new word</h3>
-      <input type="text" placeholder="Word" required>
-      <textarea rows="4" placeholder="Definition" required></textarea>
-      <button type="submit">Submit</button>
-      <p style="font-size:0.8em; margin-top:5px;">(Demo only – submissions don’t save yet)</p>
-    </form>
+          <div class="alphabet" id="alphabetBar">
+            <!-- Alphabet links will be injected -->
+          </div>
+
+          <div id="listArea">
+            <!-- Definitions will be appended here -->
+          </div>
+
+          <div class="pager">
+            <button id="prevBtn">Previous</button>
+            <button id="nextBtn">Next</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">Submit a new definition</h3>
+          <form id="submitForm">
+            <input id="wordInput" placeholder="Word (e.g., rizz)" required />
+            <input id="authorInput" placeholder="Your name or handle (optional)" />
+            <textarea id="definitionInput" placeholder="Definition (what it means)..." required></textarea>
+            <textarea id="exampleInput" placeholder="Example sentence (optional)"></textarea>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button type="submit" style="flex:1;padding:10px;border-radius:8px;border:none;background:linear-gradient(90deg,var(--tiktok-cyan),var(--tiktok-pink));color:#000;font-weight:700;cursor:pointer">Submit</button>
+            </div>
+            <p style="font-size:13px;color:var(--muted);margin-top:8px">Community-submitted definitions appear after moderation (demo). Keep it respectful.</p>
+          </form>
+        </div>
+      </section>
+
+      <aside class="right">
+        <div class="card">
+          <h3>About</h3>
+          <p style="color:var(--muted)">THE TIKTOK DICTIONARY collects and explains trending TikTok vocabulary from creators and viral moments. Vote on definitions and add community feedback (200-character minimum for comments).</p>
+          <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0">
+          <h4 style="margin:6px 0 8px 0">Quick links</h4>
+          <p><a class="small" href="#R">Browse R</a> · <a class="small" href="#S">Browse S</a> · <a class="small" href="#F">Browse F</a></p>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3>How it works</h3>
+          <ol style="text-align:left;color:var(--muted);padding-left:16px">
+            <li>Search or browse by letter.</li>
+            <li>Submit a definition (review may be required).</li>
+            <li>Vote and leave feedback (200+ chars).</li>
+          </ol>
+        </div>
+      </aside>
+    </main>
+
+    <footer>© THE TIKTOK DICTIONARY • Built for creators & culture</footer>
   </div>
 
-  <footer>
-    <p>Urban Dictionary Clone • Built for Gen Z slang • 2025</p>
-  </footer>
+  <!-- Firebase (modular) -->
+  <script type="module">
+    // IMPORTANT: Replace the firebaseConfig object below with your Firebase project's config
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import {
+      getFirestore, collection, addDoc, getDocs, query, orderBy,
+      limit, startAfter, doc, updateDoc, increment, serverTimestamp, where
+    } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+    // ---------- REPLACE THIS WITH YOUR FIREBASE CONFIG ----------
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+    // -----------------------------------------------------------
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // UI elements
+    const alphabetBar = document.getElementById('alphabetBar');
+    const listArea = document.getElementById('listArea');
+    const submitForm = document.getElementById('submitForm');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // Pagination state
+    const PAGE_SIZE = 6;
+    let lastVisible = null;
+    let firstVisible = null;
+    let currentQuery = null;
+    let currentLetter = null;
+
+    // Build alphabet links
+    (function buildAlphabet(){
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+      letters.forEach(letter=>{
+        const a = document.createElement('a');
+        a.href = `#${letter}`;
+        a.textContent = letter;
+        a.addEventListener('click', (e)=>{
+          e.preventDefault();
+          currentLetter = letter;
+          loadByLetter(letter);
+        });
+        alphabetBar.appendChild(a);
+      });
+    })();
+
+    // Helper: render a single definition card
+    function renderCard(id, data){
+      // build DOM
+      const card = document.createElement('div');
+      card.className = 'card';
+      const title = document.createElement('div');
+      title.className = 'word-row';
+      title.innerHTML = `<div>
+                            <h2 class="word-title">${escapeHtml(data.word)}</h2>
+                            <div class="word-meta">by ${escapeHtml(data.author||'anonymous')} • ${new Date(data.createdAt?.toDate?.() || Date.now()).toLocaleDateString()}</div>
+                         </div>`;
+
+      const def = document.createElement('div');
+      def.className = 'definition';
+      def.textContent = data.definition;
+
+      // actions
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+      const likeBtn = document.createElement('button');
+      likeBtn.className = 'like-btn';
+      likeBtn.innerHTML = `👍 <span class="count">${data.likes||0}</span>`;
+      const dislikeBtn = document.createElement('button');
+      dislikeBtn.className = 'dislike-btn';
+      dislikeBtn.innerHTML = `👎 <span class="count">${data.dislikes||0}</span>`;
+
+      likeBtn.addEventListener('click', async ()=>{
+        await updateDoc(doc(db, 'definitions', id), { likes: increment(1) });
+        // optimistic UI update
+        likeBtn.querySelector('.count').textContent = (parseInt(likeBtn.querySelector('.count').textContent)||0) + 1;
+      });
+      dislikeBtn.addEventListener('click', async ()=>{
+        await updateDoc(doc(db, 'definitions', id), { dislikes: increment(1) });
+        dislikeBtn.querySelector('.count').textContent = (parseInt(dislikeBtn.querySelector('.count').textContent)||0) + 1;
+      });
+
+      actions.appendChild(likeBtn);
+      actions.appendChild(dislikeBtn);
+
+      // comment form (200 char min)
+      const commentArea = document.createElement('div');
+      commentArea.className = 'comment-area';
+      const commentBox = document.createElement('textarea');
+      commentBox.placeholder = 'Leave feedback (min 200 characters)';
+      const commentBtn = document.createElement('button');
+      commentBtn.className = 'submit-comment';
+      commentBtn.textContent = 'Post Feedback';
+      commentBtn.addEventListener('click', async ()=>{
+        const text = commentBox.value.trim();
+        if(text.length < 200){
+          alert('Feedback must be at least 200 characters.');
+          return;
+        }
+        // add comment as subcollection
+        await addDoc(collection(db, 'definitions', id, 'comments'), {
+          text,
+          createdAt: serverTimestamp()
+        });
+        commentBox.value = '';
+        alert('Thanks — feedback posted!');
+      });
+      commentArea.appendChild(commentBox);
+      commentArea.appendChild(commentBtn);
+
+      card.appendChild(title);
+      card.appendChild(def);
+      card.appendChild(actions);
+      card.appendChild(commentArea);
+
+      return card;
+    }
+
+    // Load definitions by letter with pagination
+    async function loadByLetter(letter){
+      listArea.innerHTML = '<p style="color:var(--muted)">Loading...</p>';
+      currentQuery = query(collection(db,'definitions'), where('firstLetter','==',letter), orderBy('createdAt','desc'), limit(PAGE_SIZE));
+      const snap = await getDocs(currentQuery);
+      renderQueryResults(snap);
+    }
+
+    // Generic load (initial)
+    async function loadInitial(){
+      listArea.innerHTML = '<p style="color:var(--muted)">Loading...</p>';
+      currentQuery = query(collection(db,'definitions'), orderBy('createdAt','desc'), limit(PAGE_SIZE));
+      const snap = await getDocs(currentQuery);
+      renderQueryResults(snap);
+    }
+
+    // Render results and keep track of last/first
+    function renderQueryResults(snapshot){
+      listArea.innerHTML = '';
+      if(snapshot.empty){
+        listArea.innerHTML = '<p style="color:var(--muted)">No entries found.</p>';
+        return;
+      }
+      const docs = snapshot.docs;
+      docs.forEach(docSnap=>{
+        const node = renderCard(docSnap.id, docSnap.data());
+        listArea.appendChild(node);
+      });
+      firstVisible = docs[0];
+      lastVisible = docs[docs.length-1];
+    }
+
+    // Search simple (by exact word or contains)
+    async function searchWord(q){
+      listArea.innerHTML = '<p style="color:var(--muted)">Searching...</p>';
+      // very basic client-side approach: load all and filter (for demo). For large DB, implement indexed search.
+      const snap = await getDocs(collection(db,'definitions'));
+      const results = [];
+      snap.forEach(d=>{
+        const data = d.data();
+        if(data.word && data.word.toLowerCase().includes(q.toLowerCase())) results.push({id:d.id,data});
+      });
+      listArea.innerHTML = '';
+      if(results.length === 0){
+        listArea.innerHTML = '<p style="color:var(--muted)">No matches found.</p>';
+        return;
+      }
+      results.forEach(r=>{
+        const node = renderCard(r.id, r.data);
+        listArea.appendChild(node);
+      });
+    }
+
+    // Submit new definition
+    submitForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const word = document.getElementById('wordInput').value.trim();
+      const author = document.getElementById('authorInput').value.trim();
+      const definition = document.getElementById('definitionInput').value.trim();
+      const example = document.getElementById('exampleInput').value.trim();
+      if(!word || !definition){
+        alert('Please provide a word and a definition.');
+        return;
+      }
+      const firstLetter = (word[0] || '').toUpperCase();
+      await addDoc(collection(db,'definitions'), {
+        word,
+        author: author || 'anonymous',
+        definition,
+        example,
+        likes: 0,
+        dislikes: 0,
+        firstLetter,
+        createdAt: serverTimestamp()
+      });
+      submitForm.reset();
+      alert('Thanks — your submission was received!');
+      // reload for demo
+      loadInitial();
+    });
+
+    // wire up search
+    searchBtn.addEventListener('click', ()=> {
+      const q = searchInput.value.trim();
+      if(!q) loadInitial();
+      else searchWord(q);
+    });
+
+    // Pagination next/prev (demo: only next implemented via createdAt)
+    nextBtn.addEventListener('click', async ()=>{
+      if(!lastVisible) return;
+      const q = query(collection(db,'definitions'), orderBy('createdAt','desc'), startAfter(lastVisible), limit(PAGE_SIZE));
+      const snap = await getDocs(q);
+      if(!snap.empty) renderQueryResults(snap);
+    });
+
+    prevBtn.addEventListener('click', async ()=>{
+      // Prev page is more complex — simple approach reload initial for demo.
+      loadInitial();
+    });
+
+    // Utility
+    function escapeHtml(unsafe) {
+      return unsafe
+           .replace(/&/g, "&amp;")
+           .replace(/</g, "&lt;")
+           .replace(/>/g, "&gt;")
+           .replace(/"/g, "&quot;")
+           .replace(/'/g, "&#039;");
+    }
+
+    // Initialize page
+    loadInitial();
+  </script>
 </body>
 </html>
+```
