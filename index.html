@@ -1,0 +1,85 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urban Dictionary Clone</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #27293d);
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #ffcc00;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #333;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+    }
+    input, textarea {
+      background: #222;
+      color: white;
+    }
+    button {
+      background: #ffcc00;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ffaa00;
+    }
+    .word-entry {
+      background: #444;
+      padding: 10px;
+      border-radius: 8px;
+      margin: 10px 0;
+      text-align: left;
+    }
+    .word-entry h3 {
+      margin: 0;
+      color: #ffcc00;
+    }
+  </style>
+</head>
+<body>
+  <h1>Urban Dictionary Clone</h1>
+  <div class="container">
+    <h2>Add a Word</h2>
+    <input type="text" id="word" placeholder="Enter slang word">
+    <textarea id="definition" placeholder="Enter definition"></textarea>
+    <button onclick="addWord()">Submit</button>
+
+    <h2>Dictionary</h2>
+    <div id="words"></div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+  <script>
+    // TODO: Replace with your Firebase project settings
+    const firebaseConfig = {
+      apiKey: "YOUR-API-KEY",
+      authDomain: "YOUR-PROJECT-ID.firebaseapp.com",
+      databaseURL: "https://YOUR-PROJECT-ID.firebaseio.com",
+ 
+```
