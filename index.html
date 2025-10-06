@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -7,9 +8,11 @@
   <meta name="description" content="THE TIKTOK DICTIONARY - Find the lingo behind streamers, creators, and viral TikTok culture." />
 
   <!-- Google fonts -->
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
   <!-- AdSense global script -->
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5972801103270420"
      crossorigin="anonymous"></script>
 
@@ -22,7 +25,7 @@
       --tiktok-pink:#FE2C55;
       --muted:rgba(255,255,255,0.7);
     }
-    html,body{height:100%;margin:0;font-family:"Poppins",system-ui,-apple-system; color:#fff}
+    html,body{margin:0;font-family:"Poppins",system-ui,-apple-system; color:#fff}
     body{
       background: radial-gradient(1000px 500px at 10% 10%, rgba(38,0,77,0.25), transparent),
                   linear-gradient(135deg,#120f2e 0%, #20103a 40%, #2b1a4b 100%);
@@ -46,31 +49,13 @@
       justify-content:space-between;
       background: linear-gradient(90deg, rgba(20,10,40,0.6), rgba(30,15,60,0.4));
     }
-    .brand {
-      display:flex;
-      gap:14px;
-      align-items:center;
-    }
-    .logo {
-      width:72px;height:72px;border-radius:12px;overflow:hidden;border:2px solid rgba(255,255,255,0.06);
-      display:flex;align-items:center;justify-content:center;background:linear-gradient(45deg,var(--tiktok-cyan),var(--tiktok-pink));
-    }
+    .brand {display:flex;gap:14px;align-items:center;}
+    .logo {width:72px;height:72px;border-radius:12px;overflow:hidden;border:2px solid rgba(255,255,255,0.06);
+      display:flex;align-items:center;justify-content:center;background:linear-gradient(45deg,var(--tiktok-cyan),var(--tiktok-pink));}
     .logo img{width:100%;height:100%;object-fit:cover;opacity:0.95}
     .title-block{display:flex;flex-direction:column;}
-    h1.title {
-      margin:0;
-      font-size:40px;
-      line-height:1;
-      letter-spacing:0.6px;
-      color: #fff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-    }
-    p.lead {
-      margin:4px 0 0 0;
-      color:var(--muted);
-      font-size:14px;
-      max-width:760px;
-    }
+    h1.title {margin:0;font-size:40px;line-height:1;letter-spacing:0.6px;color:#fff;text-shadow: 0 2px 8px rgba(0,0,0,0.6);}
+    p.lead {margin:4px 0 0 0;color:var(--muted);font-size:14px;max-width:760px;}
     main{display:flex;gap:22px;padding:26px;}
     .left{flex:1 1 520px;min-width:280px;}
     .search-row{display:flex;gap:12px;margin-bottom:14px;}
@@ -79,24 +64,15 @@
     .alphabet{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
     .alphabet a{display:inline-block;padding:8px 10px;border-radius:8px;background:var(--tile);color:var(--muted);text-decoration:none;font-weight:600;}
     .card {background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid rgba(255,255,255,0.03);}
-    .word-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
     .word-title{font-size:22px;margin:0;color:#fff}
-    .word-meta{color:var(--muted);font-size:13px;margin-top:8px}
     .definition{margin:12px 0 10px 0;color:#e9e9fb}
-    .actions{display:flex;gap:8px;align-items:center}
-    .like-btn,.dislike-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:10px;cursor:pointer;display:flex;gap:8px;align-items:center;}
-    .like-btn.active, .dislike-btn.active{border-color:var(--tiktok-cyan); color:var(--tiktok-cyan)}
-    .count{font-weight:700;color:#fff}
-    .comment-area textarea{width:100%;min-height:110px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
-    .comment-area .submit-comment{margin-top:8px;padding:10px 14px;border-radius:10px;background:var(--tiktok-pink);border:none;color:#fff;cursor:pointer}
+    .example{color:var(--muted);font-size:14px;margin-top:4px;font-style:italic;}
     .right{width:320px;flex:0 0 320px}
-    .right .card{position:sticky;top:20px}
-    .pager{display:flex;justify-content:center;gap:10px;margin-top:12px}
-    .pager button{padding:8px 10px;border-radius:8px;border:none;background:var(--tile);color:var(--muted);cursor:pointer}
     footer{padding:16px;text-align:center;color:var(--muted);font-size:13px;}
     a.small{color:var(--tiktok-cyan);text-decoration:none}
     @media (max-width:880px){main{flex-direction:column}.right{width:100%}}
   </style>
+
 </head>
 <body>
   <div class="app" id="app">
@@ -110,45 +86,85 @@
       </div>
     </header>
 
-    <!-- Ad Unit Below Header -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5972801103270420"
-         data-ad-slot="7989662158"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+```
+<!-- Ad Unit Below Header -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5972801103270420"
+     data-ad-slot="7989662158"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+```
 
 <main>
   <section class="left">
+    <!-- Search + Alphabet -->
     <div class="card">
       <div class="search-row">
         <input id="searchInput" placeholder="Search a term (e.g., rizz, simp, cap)"/>
         <button id="searchBtn">Search</button>
       </div>
-      <div class="alphabet" id="alphabetBar"></div>
-      <div id="listArea"></div>
-      <div class="pager">
-        <button id="prevBtn">Previous</button>
-        <button id="nextBtn">Next</button>
+      <div class="alphabet">
+        <a href="#A">A</a><a href="#B">B</a><a href="#C">C</a><a href="#D">D</a>
+        <a href="#E">E</a><a href="#F">F</a><a href="#G">G</a><a href="#H">H</a>
+        <a href="#R">R</a><a href="#S">S</a><a href="#T">T</a><a href="#W">W</a>
       </div>
     </div>
 
-    <div class="card">
-      <h3 style="margin-top:0">Submit a new definition</h3>
-      <form id="submitForm">
-        <input id="wordInput" placeholder="Word (e.g., rizz)" required />
-        <input id="authorInput" placeholder="Your name or handle (optional)" />
-        <textarea id="definitionInput" placeholder="Definition (what it means)..." required></textarea>
-        <textarea id="exampleInput" placeholder="Example sentence (optional)"></textarea>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button type="submit" style="flex:1;padding:10px;border-radius:8px;border:none;background:linear-gradient(90deg,var(--tiktok-cyan),var(--tiktok-pink));color:#000;font-weight:700;cursor:pointer">Submit</button>
-        </div>
-        <p style="font-size:13px;color:var(--muted);margin-top:8px">Community-submitted definitions appear after moderation (demo). Keep it respectful.</p>
-      </form>
-    </div>
+```
+<!-- Featured Dictionary Entries -->
+<div class="card" id="R">
+  <h2 class="word-title">Rizz</h2>
+  <p class="definition">Short for "charisma." Used when someone has strong flirting skills or smooth energy.</p>
+  <p class="example">Example: "Bro pulled up with crazy rizz and got her number instantly."</p>
+</div>
+
+<div class="card" id="S">
+  <h2 class="word-title">Simp</h2>
+  <p class="definition">Someone who goes above and beyond for someone they like, often without receiving much back.</p>
+  <p class="example">Example: "He bought her flowers every week. Man’s a simp."</p>
+</div>
+
+<div class="card" id="C">
+  <h2 class="word-title">Cap</h2>
+  <p class="definition">A lie or exaggeration. "No cap" means "no lie."</p>
+  <p class="example">Example: "You said you benched 300? That’s cap."</p>
+</div>
+
+<div class="card" id="W">
+  <h2 class="word-title">W</h2>
+  <p class="definition">Slang for "win." Used to praise something good or successful.</p>
+  <p class="example">Example: "That new song? Straight W."</p>
+</div>
+
+<!-- In-Article Ad -->
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-format="fluid"
+     data-ad-layout="in-article"
+     data-ad-client="ca-pub-5972801103270420"
+     data-ad-slot="1234567890"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+<!-- More Entries -->
+<div class="card" id="F">
+  <h2 class="word-title">F</h2>
+  <p class="definition">Respect or acknowledgment of something unfortunate, from gaming meme "Press F to pay respects."</p>
+  <p class="example">Example: "His WiFi cut out during finals. F in the chat."</p>
+</div>
+
+<div class="card">
+  <h3>Submit a new definition</h3>
+  <form id="submitForm">
+    <input id="wordInput" placeholder="Word (e.g., sus)" required />
+    <textarea id="definitionInput" placeholder="Definition..." required></textarea>
+    <textarea id="exampleInput" placeholder="Example sentence (optional)"></textarea>
+    <button type="submit" style="margin-top:10px;padding:10px;border:none;border-radius:8px;background:linear-gradient(90deg,var(--tiktok-cyan),var(--tiktok-pink));color:#000;font-weight:700;cursor:pointer">Submit</button>
+  </form>
+</div>
+```
+
   </section>
 
   <aside class="right">
@@ -157,23 +173,29 @@
       <p style="color:var(--muted)">THE TIKTOK DICTIONARY collects and explains trending TikTok vocabulary from creators and viral moments. Vote on definitions and add community feedback (200-character minimum for comments).</p>
     </div>
 
-    <div class="card" style="margin-top:16px">
-      <h3>Term of the month</h3>
-      <p><a class="small" href="#R">Browse R</a> · <a class="small" href="#S">Browse S</a> · <a class="small" href="#F">Browse F</a></p>
-    </div>
+```
+<div class="card">
+  <h3>Trending Now</h3>
+  <ul>
+    <li><a href="#R" class="small">Rizz</a></li>
+    <li><a href="#C" class="small">Cap</a></li>
+    <li><a href="#W" class="small">W</a></li>
+  </ul>
+</div>
 
-    <div class="card" style="margin-top:16px">
-      <h3>Social Media</h3>
-      <p style="color:var(--muted)">
-        TikTok - <a href="https://www.tiktok.com/@tiktokdictionaryof?_t=ZP-90HzelwbtwV&_r=1" target="_blank" class="small">TikTokDictionaryOF</a><br>
-        Instagram - <a href="https://www.instagram.com/tiktokofhiddenfacts/?igsh=dW92cDk2ZnY0YmYw&utm_source=qr#" target="_blank" class="small">TikTokOFHiddenFacts</a>
-      </p>
-    </div>
+<div class="card">
+  <h3>Follow Us</h3>
+  <p style="color:var(--muted)">
+    TikTok: <a href="https://www.tiktok.com/@tiktokdictionaryof" target="_blank" class="small">@TikTokDictionaryOF</a><br>
+    Instagram: <a href="https://www.instagram.com/tiktokofhiddenfacts" target="_blank" class="small">@TikTokOFHiddenFacts</a>
+  </p>
+</div>
+```
+
   </aside>
 </main>
 
 <footer>© THE TIKTOK DICTIONARY • Built for creators & culture</footer>
-
 </div>
 </body>
 </html>
